@@ -20,7 +20,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     private EditText et1, et2, et3, et4;
 
-    @Override
+    @Override // ... código para inicializar elementos de la interfaz de usuario ...
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //EdgeToEdge.enable(this);
@@ -39,24 +39,24 @@ public class MainActivity3 extends AppCompatActivity {
         });
     }
 
-    public void Insertar(View v){
+    public void Insertar(View v){  //Base de datos abierta para lectura
         AdminSQLiteOpenHelper admim = new AdminSQLiteOpenHelper(this, "administracion", null,1 );
         SQLiteDatabase db = admim.getReadableDatabase();
-        String documento = et1.getText().toString();
+        String documento = et1.getText().toString(); //Obtener entrada del usuario
         String nombre = et2.getText().toString();
         String correo = et3.getText().toString();
         String telefono = et4.getText().toString();
 
         ContentValues registro = new ContentValues();
-
+        //Crear objeto de valores de contenido
         registro.put("documento", documento);
         registro.put("nombre", nombre);
         registro.put("correo", correo);
         registro.put("telefono", telefono);
-        db.insert("clientes",null,registro);
-        db.close();
+        db.insert("clientes",null,registro);//Insertar datos en la BD
+        db.close();//Cerrar conexión de BD
 
-        et1.setText("");
+        et1.setText("");//Borrar campos de entrada
         et2.setText("");
         et3.setText("");
         et4.setText("");
@@ -68,17 +68,17 @@ public class MainActivity3 extends AppCompatActivity {
         AdminSQLiteOpenHelper admim =new AdminSQLiteOpenHelper(this, "administracion", null,1 );
         SQLiteDatabase db = admim.getReadableDatabase();
         String doc = et1.getText().toString();
-
+//Ejecutar consulta SQL
         Cursor fila = db.rawQuery("SELECT nombre, correo, telefono FROM clientes WHERE documento=" + doc,null);
 
-        if (fila.moveToFirst()){
+        if (fila.moveToFirst()){//Verificar resultados
             et2.setText(fila.getString(0));
             et3.setText(fila.getString(1));
             et4.setText(fila.getString(2));
         }else {
             Toast.makeText(this, "No existe un registro con ese documento", Toast.LENGTH_LONG).show();
         }
-        db.close();
+        db.close();//cierra la conexión a la bd
     }
 
     public void Eliminar(View v){
@@ -89,7 +89,7 @@ public class MainActivity3 extends AppCompatActivity {
         int cant = db.delete("clientes", "documento=" + doc,null);
         db.close();
 
-        et1.setText("");
+        et1.setText("");//Borrar campos de entrada
         et2.setText("");
         et3.setText("");
         et4.setText("");
@@ -104,20 +104,20 @@ public class MainActivity3 extends AppCompatActivity {
     public void Modificar (View v){
         AdminSQLiteOpenHelper admim = new AdminSQLiteOpenHelper(this, "administracion", null,1 );
         SQLiteDatabase db = admim.getReadableDatabase();
-        String doc = et1.getText().toString();
+        String doc = et1.getText().toString();//Obtener entrada del usuario
         String nombre = et2.getText().toString();
         String correo = et3.getText().toString();
         String telefono = et4.getText().toString();
 
         ContentValues registro = new ContentValues();
 
-        registro.put("nombre", nombre);
+        registro.put("nombre", nombre);//Crear objeto de valores de contenido
         registro.put("correo", correo);
         registro.put("telefono", telefono);
 
         int cant = db.update("clientes", registro,"documento=" + doc, null);
 
-        et1.setText("");
+        et1.setText("");//Borrar campos de entrada
         et2.setText("");
         et3.setText("");
         et4.setText("");
@@ -131,7 +131,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     public void Limpiar (View v){
 
-        et1.setText("");
+        et1.setText("");//Borrar campos de entrada
         et2.setText("");
         et3.setText("");
         et4.setText("");
